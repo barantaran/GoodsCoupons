@@ -1,0 +1,10 @@
+[
+  {
+    "domain" : "mvideo.ru",
+    "product_title_reg" : "(?<=Купить)(.*)(?= в каталоге)"
+  },
+  {
+    "domain" : "ozon.ru",
+    "product_title_reg" : "(?<=Купить)(.*)(?= в каталоге)"
+  }
+]

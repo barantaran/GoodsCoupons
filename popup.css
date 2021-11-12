@@ -1,0 +1,21 @@
+button {
+  height: 30px;
+  width: 30px;
+  outline: none;
+  margin: 10px;
+  border: none;
+  border-radius: 20px;
+}
+
+button.current {
+  box-shadow: 0 0 0 2px white,
+              0 0 0 4px black;
+}
+
+body {
+  width: 540px;
+}
+
+#offers-list{
+  margin: 20px;
+}
