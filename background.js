@@ -29,7 +29,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
                 console.log(goodTitle);
 
-                lookUpOffer(offersLookupEndpoint + goodTitle, { answer: 42 })
+                requestOffers(offersLookupEndpoint + goodTitle, { answer: 42 })
                     .then(data => {
                         console.log(data.data.items)
 
@@ -65,7 +65,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     }
 });
 
-async function lookUpOffer(url = '', data = {}) {
+async function requestOffers(url = '', data = {}) {
     console.log("Getting data from " + url);
 
     const response = await fetch(url, {
