@@ -1,6 +1,5 @@
 button {
   height: 30px;
-  width: 30px;
   outline: none;
   margin: 10px;
   border: none;
@@ -13,9 +12,175 @@ button.current {
 }
 
 body {
-  width: 540px;
+    width: 640px;
+    min-height: 170px;
 }
 
 #offers-list{
-  margin: 20px;
+    margin: 20px;
+    min-height: 100px;
+}
+
+.offer-item {
+ margin-bottom: 5px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
+a{
+  text-decoration: none;
+  color: #0074D9;
+  font-size: larger;
+}
+
+.underline{
+  position: relative;
+}
+
+.underline::before{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 1px;
+  background-color: #0074D9;
+  transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .underline:hover::before{
+    left: 0;
+    right: auto;
+    width: 100%;
+  }
+}
+
+.button-29 {
+ align-items: center;
+ appearance: none;
+ background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+ border: 0;
+ border-radius: 6px;
+ box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
+ box-sizing: border-box;
+ color: #fff;
+ cursor: pointer;
+ display: inline-flex;
+ font-family: "JetBrains Mono",monospace;
+ height: 48px;
+ justify-content: center;
+ line-height: 1;
+ list-style: none;
+ overflow: hidden;
+ padding-left: 16px;
+ padding-right: 16px;
+ position: relative;
+ text-align: left;
+ text-decoration: none;
+ transition: box-shadow .15s,transform .15s;
+ user-select: none;
+ -webkit-user-select: none;
+ touch-action: manipulation;
+ white-space: nowrap;
+ will-change: box-shadow,transform;
+ font-size: 18px;
+}
+
+.button-29:focus {
+  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+}
+
+.button-29:hover {
+  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.button-29:active {
+  box-shadow: #3c4fe0 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+#content{
+    display: grid;
+}
+
+.divTable{
+    display: table;
+    width: 100%;
+}
+.divTableRow {
+    display: table-row;
+}
+.divTableHeading {
+    background-color: #EEE;
+    display: table-header-group;
+}
+.divTableCell, .divTableHead {
+    border: 1px solid #999999;
+    display: table-cell;
+    padding: 3px 10px;
+}
+.divTableHeading {
+    background-color: #EEE;
+    display: table-header-group;
+    font-weight: bold;
+}
+.divTableFoot {
+    background-color: #EEE;
+    display: table-footer-group;
+    font-weight: bold;
+}
+.divTableBody {
+    display: table-row-group;
+}
+
+td.offer-price{
+    white-space: nowrap;
+    float: right;
+}
+
+td.offer-name{
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 500px;
+    padding: 5px;
+}
+
+.price-value{
+    font-size: 20px;
+}
+
+.currency{
+    color: lightblue;
+}
+
+tr:nth-child(odd){
+    background-color: #d3f4ff;
+}
+
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+*
+{
+    font-family: Open Sans;
+}
+
+.row{
+    border-bottom: 1px solid #085481;
+}
+
+.heading {
+    background-color: #085481;
+    color: white;
+    display: inline-block;
+    font-weight: bold;
+    padding: 0px 30px 0px 15px;
+    font-size: 14px;
+    text-transform: uppercase;
 }

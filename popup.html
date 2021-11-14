@@ -5,9 +5,30 @@
     <link rel="stylesheet" href="popup.css">
   </head>
   <body>
-    <input type="text" id = "offer-search">
-    <div id="offers-list">Пока ничего не нашли для Вас, но мы стараемся!</div>
-    <input type="button" name="offers-clear" id="offers-clear" value="Очистить">
-    <script src="popup.js"></script>
+  <div id="content">
+    <div class="row">
+      <div id="greetings" class="heading">Подбираем выгодные предложения!</div>
+    </div>
+    <div id="offers-list">
+      <table class="offers-list">
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div id="controls">
+      <button role="button" class="button-29"  name="offers-clear" id="offers-clear">Спасибо, уберите!</button>
+    </div>
+  </div>
+
+  <template id="offer-row">
+    <tr>
+      <td class="offer-name">
+        <a class="offer-link underline" href="{{url}}" target="_blank">{{name}}</a>
+      </td>
+      <td class="offer-price"><span class="price-value">{{price}}</span> <span class="currency">₽</span></td>
+    </tr>
+  </template>
+
+  <script src="popup.js"></script>
   </body>
 </html>

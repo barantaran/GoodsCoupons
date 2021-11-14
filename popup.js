@@ -1,36 +1,24 @@
-var offersListBlock = document.getElementById("offers-list");
+let greetingsBlock = document.getElementById("greetings");
+let offersCount;
 
-const searchInputHandler = function(e) {
-
-  let offerLinks = document.getElementsByClassName('offer-item-link');
-
-  for (let x = 0; x < offerLinks.length; x++) {
-    let oneOfferLink = offerLinks[x];
-    let content = oneOfferLink.innerHTML.trim();
-
-    if (!content.toLowerCase().includes(e.target.value.toLowerCase())) {
-      oneOfferLink.parentElement.style.display = 'none';
-    } else {
-      oneOfferLink.parentElement.style.display = 'block';
-    }
-  }
-}
+chrome.action.setBadgeText({text:''});
 
 const buttonClearHandler = function(e) {
-  chrome.storage.local.remove("offersFound");
-  chrome.action.setBadgeText({text:''});
+  let offerLinks = document.getElementById('offers-list');
 
-  let offerLinks = document.getElementsByClassName('offer-item');
+  if (offersCount) {
+    while (offerLinks.firstChild) {
+      offerLinks.removeChild(offerLinks.firstChild);
+    }
 
-  while(offerLinks.length > 0){
-    offerLinks[0].parentNode.removeChild(offerLinks[0]);
+    greetingsBlock.innerHTML = "<h2>Поищем что-нибудь еще!</h2>";
+
+    chrome.storage.local.remove("offersFound");
+    delay(1000).then(() => window.close());
+  } else {
+    delay(100).then(() => window.close());
   }
-
-  offersListBlock.innerText = "Очищено! Поищем что-нибудь еще.";
 }
-
-const source = document.getElementById('offer-search');
-source.addEventListener('input', searchInputHandler);
 
 const clearButton = document.getElementById('offers-clear');
 clearButton.addEventListener('click', buttonClearHandler);
@@ -39,38 +27,46 @@ chrome.storage.local.get("offersFound", ( offers ) => {
 
   if(!offers || !offers.offersFound || !offers.offersFound.length) return;
 
-  offersListBlock.innerHTML = '';
+  offersCount = offers.offersFound.length;
+  greetingsBlock.innerHTML = '<h3>' + offersCount + ' предложений</h3>';
 
   offers.offersFound.sort(compareOfferPrice);
-  offers.offersFound.sort(compareName);
-
-  var currentCategory = '';
 
   offers.offersFound.forEach((offerItem) => {
     console.log(offerItem);
 
-    if(offerItem.name.replace(/ .*/,'') != currentCategory){
-      offersListBlock.appendChild(document.createElement('br'));
-      currentCategory = offerItem.name.replace(/ .*/,'');
-    }
+    let tbody = document.querySelector("tbody");
+    let template = document.querySelector('#offer-row');
 
-    offersListBlock.appendChild( composeOfferLink(offerItem) );
+    let tmpClone = template.content.cloneNode(true).firstElementChild.outerHTML;
+
+    let offerRow = renderRow(tmpClone, offerItem);
+
+    tbody.insertAdjacentHTML('beforeend', offerRow);
+
+    //greetingsBlock.appendChild( composeOfferLink(offerItem) );
   });
 });
+
+function renderRow (template, data) {
+  return template.replace(/{{(.*?)}}/g, (match) => {
+    return data[match.split(/{{|}}/).filter(Boolean)[0]]
+  })
+}
 
 function composeOfferLink(offer) {
 
   var offerLine = document.createElement('div');
   var offerLink = document.createElement('a');
 
-  var offerText = document.createTextNode(offer.name);
-  var offerPrice = document.createTextNode(' - ' + offer.price + ' руб');
+  var offerText = document.createTextNode(offer.name.substring(0, 50));
+  var offerPrice = document.createTextNode('... ' + offer.price + ' руб');
 
   offerLink.appendChild(offerText);
 
   offerLink.setAttribute('href', offer.url);
   offerLink.setAttribute('target', '_blank');
-  offerLink.setAttribute('class', 'offer-item-link');
+  offerLink.setAttribute('class', 'offer-item-link underline');
   offerLine.setAttribute('class', 'offer-item');
 
 
@@ -110,4 +106,6 @@ function compareName( offerOne, offerAnother ) {
   return 0;
 }
 
-// chrome.action.setBadgeText({text: "10+"});
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
