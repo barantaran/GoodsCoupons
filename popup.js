@@ -19,23 +19,11 @@ const buttonClearHandler = function(e) {
     delay(100).then(() => window.close());
   }
 }
-
-const clearButton = document.getElementById('offers-clear');
-clearButton.addEventListener('click', buttonClearHandler);
-
-chrome.storage.local.get("offersFound", ( offers ) => {
-
-  if(!offers || !offers.offersFound || !offers.offersFound.length) return;
-
-  offersCount = offers.offersFound.length;
-  greetingsBlock.innerHTML = '<h3>' + offersCount + ' предложений</h3>';
-
-  offers.offersFound.sort(compareOfferPrice);
-
-  offers.offersFound.forEach((offerItem) => {
+function renderOffers(selector, offers) {
+  offers.forEach((offerItem) => {
     console.log(offerItem);
 
-    let tbody = document.querySelector("tbody");
+    let tbody = document.querySelector(selector);
     let template = document.querySelector('#offer-row');
 
     let tmpClone = template.content.cloneNode(true).firstElementChild.outerHTML;
@@ -43,9 +31,34 @@ chrome.storage.local.get("offersFound", ( offers ) => {
     let offerRow = renderRow(tmpClone, offerItem);
 
     tbody.insertAdjacentHTML('beforeend', offerRow);
-
-    //greetingsBlock.appendChild( composeOfferLink(offerItem) );
   });
+}
+
+const clearButton = document.getElementById('offers-clear');
+clearButton.addEventListener('click', buttonClearHandler);
+
+
+chrome.storage.local.get("offersFound", ( offers ) => {
+
+  if(!offers || !offers.offersFound.mainOffer || !offers.offersFound.mainOffer.length) return;
+
+  offersCount = offers.offersFound.mainOffer.length + offers.offersFound.similarOffers.length;
+
+  let mainOffer = offers.offersFound.mainOffer;
+  let similarOffers = offers.offersFound.similarOffers;
+
+
+  mainOffer.sort(compareOfferPrice);
+  renderOffers('#main-offer', mainOffer);
+
+  if(similarOffers){
+    similarOffers.sort(compareOfferPrice);
+    renderOffers('#similar-offers', similarOffers);
+    document.getElementById("similar-offer-header").innerHTML = '<h3>С этим товаром также ищут:</h3>';
+  }
+
+  greetingsBlock.innerHTML = '<h3>' + offersCount + ' предложения</h3>';
+
 });
 
 function renderRow (template, data) {

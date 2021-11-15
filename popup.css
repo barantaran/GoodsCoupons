@@ -184,3 +184,7 @@ tr:nth-child(odd){
     font-size: 14px;
     text-transform: uppercase;
 }
+
+body {
+    padding: 40px;
+}

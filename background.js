@@ -40,24 +40,23 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 let goodTitle = found[0].replaceAll(/\w*\d\w*/g, "").replaceAll(/[()]/g, '').trim();
 
                 console.log(goodTitle);
-                let offersFound = [];
+                let offersFound = { mainOffer : [], similarOffers : []};
 
                 requestOffers(offersLookupEndpoint + goodTitle)
                     .then(data => {
                         console.log(data.data.items)
 
-                        offersFound = fillOutOfferData(data, config.maxOffersPerRequest);
-                        setStorageAndBadge(offersFound);
+                        offersFound.mainOffer = fillOutOfferData(data, config.maxOffersPerRequest);
 
-                        offersFound.forEach(oneOffer => {
+                        offersFound.mainOffer.forEach(oneOffer => {
                             requestOffers( prosectCityLink(oneOffer.similarGoods) ).then(data => {
-                                offersFound = offersFound.concat( fillOutOfferData(data, config.maxOffersPerRequest) );
+                                offersFound.similarOffers = fillOutOfferData(data, config.maxOffersPerRequest);
+                                chrome.storage.local.set({offersFound: offersFound});
 
-                                setStorageAndBadge(offersFound);
+                                chrome.action.setBadgeText({text: (offersFound.mainOffer.length + offersFound.similarOffers.length).toString()});
                             });
                         })
                     });
-
             }
         });
     }
