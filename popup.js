@@ -57,7 +57,7 @@ chrome.storage.local.get("offersFound", ( offers ) => {
     document.getElementById("similar-offer-header").innerHTML = '<h3>С этим товаром также ищут:</h3>';
   }
 
-  greetingsBlock.innerHTML = '<h3>' + offersCount + ' предложения</h3>';
+  greetingsBlock.innerHTML = '<h3>' + offersCount + ' ' + declOfNum(offersCount, ['предложение','предложения','предложений']);'</h3>';
 
 });
 
@@ -121,4 +121,9 @@ function compareName( offerOne, offerAnother ) {
 
 function delay(time) {
   return new Promise(resolve => setTimeout(resolve, time));
+}
+
+function declOfNum(number, titles) {
+  cases = [2, 0, 1, 1, 1, 2];
+  return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];
 }
